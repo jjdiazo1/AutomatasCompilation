@@ -49,6 +49,7 @@ So basically it's something like this, but since there's a lot of states, the de
 ### Example
 
 We input this in the coder
+
 <img width="770" alt="Screenshot 2024-10-21 at 7 42 32 PM" src="https://github.com/user-attachments/assets/50a0fb2f-2a44-4049-9b1e-a4c3dc586093">
 
 Then we input the output of the coder in the decoder and we get the same result
