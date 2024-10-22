@@ -39,3 +39,10 @@ But a simpler way of understanding how it works is presented here:
 Sorry that the explanation is in spanish but basically, we calculate a G that will be the value written in each transition, so if I am currently in 6 and read 2 we apply the formula ABS(6-2) = 4 then we convert to binary using always 3 bits (since we only want to represent a b and c) 100 and we get 1 a, 0 bs, 0 cs, that means we have to decode an A there. 
 
 ![Image 21-10-24 at 7 45 PM](https://github.com/user-attachments/assets/f59358a2-67db-449f-b6ca-7df4d9e4ca55)
+
+### Simplification
+
+![Image 21-10-24 at 7 47 PM](https://github.com/user-attachments/assets/937ac085-128f-4641-aedc-4d90ac47ede2)
+
+So basically it's something like this, but since there's a lot of states, the decoder automatically calculates everything using the transition function and the value for G. 
+
