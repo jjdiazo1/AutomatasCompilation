@@ -4,6 +4,7 @@ A compilation of automatas I made for the course Languages and Machines in Unive
 ## 1. Cat Even
 
 <img width="542" alt="Screenshot 2024-10-15 at 3 00 43 PM" src="https://github.com/user-attachments/assets/5ada6d2f-37fb-4743-9700-851df93e2f23">
+
 Recognizes strings that has even quantity of cats
 `catchthatcat` or `catchingcat` or  `catcat` or `catcatttcatcath`
 Rejects strings with odd quantity of cats
@@ -25,3 +26,16 @@ It took a lot of states...
 But a simpler way of understanding how it works is presented here:
 
 ![WhatsApp Image 2024-10-17 at 5 59 01 PM](https://github.com/user-attachments/assets/07d2c3d0-edb5-4467-bacb-7f9d2936d5f1)
+
+## 3. |A| |B| |C| mod 2 Transducer
+
+### Coder
+<img width="371" alt="Screenshot 2024-10-21 at 7 42 42 PM" src="https://github.com/user-attachments/assets/1c9cb0ea-0691-4776-80ba-2aa38bb7cf1c">
+
+### Decoder
+<img width="485" alt="Screenshot 2024-10-21 at 7 42 49 PM" src="https://github.com/user-attachments/assets/83dc19e9-c0dc-4dc2-925c-22f37a3ecd06">
+
+### Explanation
+Sorry that the explanation is in spanish but basically, we calculate a G that will be the value written in each transition, so if I am currently in 6 and read 2 we apply the formula ABS(6-2) = 4 then we convert to binary using always 3 bits (since we only want to represent a b and c) 100 and we get 1 a, 0 bs, 0 cs, that means we have to decode an A there. 
+
+![Image 21-10-24 at 7 45 PM](https://github.com/user-attachments/assets/f59358a2-67db-449f-b6ca-7df4d9e4ca55)
