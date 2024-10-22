@@ -46,3 +46,12 @@ Sorry that the explanation is in spanish but basically, we calculate a G that wi
 
 So basically it's something like this, but since there's a lot of states, the decoder automatically calculates everything using the transition function and the value for G. 
 
+### Example
+
+We input this in the coder
+<img width="770" alt="Screenshot 2024-10-21 at 7 42 32 PM" src="https://github.com/user-attachments/assets/50a0fb2f-2a44-4049-9b1e-a4c3dc586093">
+
+Then we input the output of the coder in the decoder and we get the same result
+
+<img width="770" alt="Screenshot 2024-10-21 at 7 42 20 PM" src="https://github.com/user-attachments/assets/76a4f7fe-3a95-42e6-9860-0235a4935b84">
+
