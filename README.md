@@ -58,10 +58,67 @@ We input this in the coder
 
 Then we input the output of the coder in the decoder and we get the same result
 
+<img width="770" alt="Screenshot 2024-10-21 at 7 42 20 PM" src="https://github.com/user-attachments/assets/76a4f7fe-3a95-42e6-9860-0235a4935b84">
+
+# Transducers
+Coders and decoders
+
+---
+## 1. Alphabet to binary Transducer
+This one was pretty straightforward, it implements a coder that processes input strings containing the characters `a`, `b`, and `c` and outputs a string of numbers (`0` to `7`). The output represents the parity (mod 2) of the count of each character (`a`, `b`, `c`) read at each point in the input. Specifically:
+
+- The coder writes numbers based on the parity (mod 2) of the counts of `a`s, `b`s, and `c`s it has seen so far.
+- Each output number is calculated using the formula:  
+
+```output = (a's mod 2) * 4 + (b's mod 2) * 2 + (c's mod 2)```
+
+- This results in a single digit between `0` and `7` being written for each step.
+
+The project is designed to demonstrate concepts in modular arithmetic and finite state encoding.
+
+The following table shows how the output is determined based on the parity (mod 2) of the counts of `a`, `b`, and `c`:
+
+| a's mod 2 | b's mod 2 | c's mod 2 | Output |
+|-----------|-----------|-----------|--------|
+|     0     |     0     |     0     |   0    |
+|     0     |     0     |     1     |   1    |
+|     0     |     1     |     0     |   2    |
+|     0     |     1     |     1     |   3    |
+|     1     |     0     |     0     |   4    |
+|     1     |     0     |     1     |   5    |
+|     1     |     1     |     0     |   6    |
+|     1     |     1     |     1     |   7    |
+
+The following are some examples of input strings and their corresponding outputs:
+
+| Input                | Output            |
+|----------------------|-------------------|
+| `abccab`            | `0467620`         |
+| `aaaa`              | `04040`           |
+| `ababab`            | `0462046`         |
+| `abccabcaabbcaacb`  | `0467310402015102`|
+| `λ` (empty string)  | `0`               |
+
+
+1. **Input:** `abccab`  
+ - Read `a`: `a=1 (mod 2=1)`, `b=0`, `c=0` → Write `4`
+ - Read `b`: `a=1`, `b=1 (mod 2=1)`, `c=0` → Write `6`
+ - Read `c`: `a=1`, `b=1`, `c=1 (mod 2=1)` → Write `7`
+ - Continue similarly until the end.
+
+2. **Input:** `aaaa`  
+ - Each `a` toggles its mod 2 parity between 0 and 1, resulting in alternating `4` and `0`.
+
+3. **Empty Input:** `λ`  
+ - No characters are read, so the output is `0`.
+
+
+## 2. Coder Decoder Phrases
+This one was the second full project of the course. It worked 
+
+
 # PDAs
 PushDown Automatas
 
 ---
-
-<img width="770" alt="Screenshot 2024-10-21 at 7 42 20 PM" src="https://github.com/user-attachments/assets/76a4f7fe-3a95-42e6-9860-0235a4935b84">
 
