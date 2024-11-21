@@ -1,0 +1,236 @@
+using gold.**
+
+procedure main(args:String[]) begin
+	
+	var sc:java.util.Scanner(System.$in)
+    coder:=createCoder()
+   	deCoder:=createDecoder()
+⧐    GAutomataFrame.show(coder)
+⧐    GAutomataFrame.show(deCoder)
+    
+  Utilities.testCodeDecode (coder, deCoder)	
+end
+
+⧐ CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER CODER 
+
+function createCoder():ITransducer begin
+	
+	Q:= ((0‥4) × (0‥2) × (0‥4) × ('a'‥'z')) ∪ {"error"} ∪ {"inicio"} ∪ {"final"} ∪ {
+    ⟨0,0,0,' '⟩, ⟨0,0,1,' '⟩, ⟨0,0,2,' '⟩, ⟨0,0,3,' '⟩, ⟨0,0,4,' '⟩,
+    ⟨0,1,0,' '⟩, ⟨0,1,1,' '⟩, ⟨0,1,2,' '⟩, ⟨0,1,3,' '⟩, ⟨0,1,4,' '⟩,
+    ⟨0,2,0,' '⟩, ⟨0,2,1,' '⟩, ⟨0,2,2,' '⟩, ⟨0,2,3,' '⟩, ⟨0,2,4,' '⟩,
+
+    ⟨1,0,0,' '⟩, ⟨1,0,1,' '⟩, ⟨1,0,2,' '⟩, ⟨1,0,3,' '⟩, ⟨1,0,4,' '⟩,
+    ⟨1,1,0,' '⟩, ⟨1,1,1,' '⟩, ⟨1,1,2,' '⟩, ⟨1,1,3,' '⟩, ⟨1,1,4,' '⟩,
+    ⟨1,2,0,' '⟩, ⟨1,2,1,' '⟩, ⟨1,2,2,' '⟩, ⟨1,2,3,' '⟩, ⟨1,2,4,' '⟩,
+
+    ⟨2,0,0,' '⟩, ⟨2,0,1,' '⟩, ⟨2,0,2,' '⟩, ⟨2,0,3,' '⟩, ⟨2,0,4,' '⟩,
+    ⟨2,1,0,' '⟩, ⟨2,1,1,' '⟩, ⟨2,1,2,' '⟩, ⟨2,1,3,' '⟩, ⟨2,1,4,' '⟩,
+    ⟨2,2,0,' '⟩, ⟨2,2,1,' '⟩, ⟨2,2,2,' '⟩, ⟨2,2,3,' '⟩, ⟨2,2,4,' '⟩,
+
+    ⟨3,0,0,' '⟩, ⟨3,0,1,' '⟩, ⟨3,0,2,' '⟩, ⟨3,0,3,' '⟩, ⟨3,0,4,' '⟩,
+    ⟨3,1,0,' '⟩, ⟨3,1,1,' '⟩, ⟨3,1,2,' '⟩, ⟨3,1,3,' '⟩, ⟨3,1,4,' '⟩,
+    ⟨3,2,0,' '⟩, ⟨3,2,1,' '⟩, ⟨3,2,2,' '⟩, ⟨3,2,3,' '⟩, ⟨3,2,4,' '⟩,
+
+    ⟨4,0,0,' '⟩, ⟨4,0,1,' '⟩, ⟨4,0,2,' '⟩, ⟨4,0,3,' '⟩, ⟨4,0,4,' '⟩,
+    ⟨4,1,0,' '⟩, ⟨4,1,1,' '⟩, ⟨4,1,2,' '⟩, ⟨4,1,3,' '⟩, ⟨4,1,4,' '⟩,
+    ⟨4,2,0,' '⟩, ⟨4,2,1,' '⟩, ⟨4,2,2,' '⟩, ⟨4,2,3,' '⟩, ⟨4,2,4,' '⟩
+	}
+
+	In:= ('a'‥'z') ∪ {'.'} ∪ {' '}
+	Out:= ('a'‥'z') ∪ ('0'‥'4') ∪ {'.'} ∪ {' '}
+	q₀:= "inicio"
+	F:=	 {"final"}
+	
+	return GDeterministicTransducer(Q,In,Out,q₀,F,δ,g,h)
+end
+
+function δ(q,symbol) begin
+	
+	if q = "inicio" and symbol in ('a'‥'z') then return ⟨2,2,2,symbol⟩ // Primera palabra leida
+		
+	elseif q = "final" and symbol in ('a'‥'z') then return "error"
+		
+	else return "error"
+		
+	end
+end
+	
+function δ(⟨i,j,d, s⟩,symbol) begin
+			
+		if symbol = ' ' then return ⟨(d+1)%5,1,(d+1)%5, symbol⟩ //Cuando cambia de palabra
+			
+		elseif s = ' ' and symbol != '.' then return ⟨i,(j+1)%3, d, symbol⟩
+			
+		elseif symbol in ('a'‥'z') then return ⟨(i+1)%5,(j+1)%3, d,s⟩ //Resto de la palabra
+									
+		elseif symbol = '.' then return "final" //Final de la palabra
+			
+		end
+	end
+	
+	function h(⟨i,j, d, s⟩,symbol) begin
+		
+		jChar:= toChar(j)
+		iChar:= toChar(i)
+						
+		if symbol = s then return jChar // Esto es B1‥.Bn
+			
+		elseif symbol = '.' then return  String.valueOf(s) + String.valueOf(iChar) + String.valueOf(symbol)  // Final escribe todo + .
+			
+		elseif symbol = ' ' then return String.valueOf(s) + String.valueOf(iChar) // Esto es D1‥.Dn
+		
+		elseif symbol != s then return symbol // Letras normales
+			
+		end
+	end	
+
+	
+	
+	function h(q,symbol) begin
+		
+			if q = "inicio" and symbol in ('a'‥'z') then return symbol
+		
+			elseif q = "final" and symbol in ('a'‥'z') then return "error" 
+		
+			else return "error"
+				
+		end
+	end
+
+function toChar(symbol) begin
+	  	if symbol = 0 then return '0' // Esto es B1‥.Bn
+		
+		elseif symbol = 1 then return '1'
+			
+		elseif symbol = 2 then return '2'
+			
+		elseif symbol = 3 then return '3'
+			
+		elseif symbol = 4 then return '4'
+		
+		end
+end
+
+
+function g(q) begin
+	  return λ
+end
+
+ 
+
+⧐ DECODER  DECODER DECODER DECODER DECODER DECODER DECODER DECODER DECODER DECODER DECODER DECODER DECODER DECODER DECODER DECODER
+
+function createDecoder():ITransducer begin
+
+	Q:= ((0‥4) × (0‥2) × (0‥4) × ('a'‥'z')) ∪ {"error"} ∪ {"inicio"} ∪ {"final"} ∪ {
+    ⟨0,0,0,' '⟩, ⟨0,0,1,' '⟩, ⟨0,0,2,' '⟩, ⟨0,0,3,' '⟩, ⟨0,0,4,' '⟩,
+    ⟨0,1,0,' '⟩, ⟨0,1,1,' '⟩, ⟨0,1,2,' '⟩, ⟨0,1,3,' '⟩, ⟨0,1,4,' '⟩,
+    ⟨0,2,0,' '⟩, ⟨0,2,1,' '⟩, ⟨0,2,2,' '⟩, ⟨0,2,3,' '⟩, ⟨0,2,4,' '⟩,
+
+    ⟨1,0,0,' '⟩, ⟨1,0,1,' '⟩, ⟨1,0,2,' '⟩, ⟨1,0,3,' '⟩, ⟨1,0,4,' '⟩,
+    ⟨1,1,0,' '⟩, ⟨1,1,1,' '⟩, ⟨1,1,2,' '⟩, ⟨1,1,3,' '⟩, ⟨1,1,4,' '⟩,
+    ⟨1,2,0,' '⟩, ⟨1,2,1,' '⟩, ⟨1,2,2,' '⟩, ⟨1,2,3,' '⟩, ⟨1,2,4,' '⟩,
+
+    ⟨2,0,0,' '⟩, ⟨2,0,1,' '⟩, ⟨2,0,2,' '⟩, ⟨2,0,3,' '⟩, ⟨2,0,4,' '⟩,
+    ⟨2,1,0,' '⟩, ⟨2,1,1,' '⟩, ⟨2,1,2,' '⟩, ⟨2,1,3,' '⟩, ⟨2,1,4,' '⟩,
+    ⟨2,2,0,' '⟩, ⟨2,2,1,' '⟩, ⟨2,2,2,' '⟩, ⟨2,2,3,' '⟩, ⟨2,2,4,' '⟩,
+
+    ⟨3,0,0,' '⟩, ⟨3,0,1,' '⟩, ⟨3,0,2,' '⟩, ⟨3,0,3,' '⟩, ⟨3,0,4,' '⟩,
+    ⟨3,1,0,' '⟩, ⟨3,1,1,' '⟩, ⟨3,1,2,' '⟩, ⟨3,1,3,' '⟩, ⟨3,1,4,' '⟩,
+    ⟨3,2,0,' '⟩, ⟨3,2,1,' '⟩, ⟨3,2,2,' '⟩, ⟨3,2,3,' '⟩, ⟨3,2,4,' '⟩,
+
+    ⟨4,0,0,' '⟩, ⟨4,0,1,' '⟩, ⟨4,0,2,' '⟩, ⟨4,0,3,' '⟩, ⟨4,0,4,' '⟩,
+    ⟨4,1,0,' '⟩, ⟨4,1,1,' '⟩, ⟨4,1,2,' '⟩, ⟨4,1,3,' '⟩, ⟨4,1,4,' '⟩,
+    ⟨4,2,0,' '⟩, ⟨4,2,1,' '⟩, ⟨4,2,2,' '⟩, ⟨4,2,3,' '⟩, ⟨4,2,4,' '⟩
+	}
+
+	In:= ('a'‥'z') ∪ ('0'‥'4') ∪ {'.'}
+	Out:= ('a'‥'z') ∪ {'.'} ∪ {' '}
+	q₀:= "inicio"
+	F:=	 {"final"}
+	
+	return GDeterministicTransducer(Q,In,Out,q₀,F,δ1,g1,h1)
+end
+
+function δ1(q,symbol) begin
+	
+	if q = "inicio" and symbol in ('a'‥'z') then return ⟨2,2,2,symbol⟩ // Primera palabra leida
+		
+	elseif q = "final" and symbol != "" then return "error" // MAYBE DA ERROR
+		
+	else return "error"
+		
+	end
+end
+
+	function δ1(⟨i,j,d, s⟩,symbol) begin
+			
+		if symbol = s then return ⟨(d+1)%5,(j+1)%3,(d+1)%5, ' '⟩ //Cuando cambia de palabra
+
+		elseif symbol in ('0'‥'4') and s= ' ' then return ⟨i,1, d,s⟩ //No cambio nada en el caracter que sobra en los espacios como s2 en el s si hago en el 2 no.
+
+		elseif s = ' ' and symbol != '.' then return ⟨i,(j+1)%3, d, symbol⟩
+			
+		elseif symbol in ('a'‥'z') then return ⟨(i+1)%5,(j+1)%3, d,s⟩ //Resto de la palabra
+			
+		elseif symbol in ('0'‥'4') and s!= ' ' then return ⟨(i+1)%5,(j+1)%3, d,s⟩ //Resto de la palabra	
+						
+		elseif symbol = '.' then return "final" //Final de la palabra
+			
+		else return "error"
+			
+		end
+	end
+	
+	
+	function h1(⟨i,j, d, s⟩,symbol) begin
+				
+		if symbol = s then return "" // No devuelve nada al  volver a ver su letra. es porque ya termino la palabra EJ: easye4 el e4 cuando lea el e no pone nada, en el 4 espacio.
+
+		elseif symbol = '.' then return '.'
+
+		elseif symbol = ' ' then return "Error" // En la cadena codeada no deberian haber espacios'
+
+		elseif symbol in ('a'‥'z') and s = ' ' then return " " + symbol // Por ejemplo en ex0rcis2se0 ese se0 del final debe reemplazarse por un espacio
+
+		elseif symbol in ('0'‥'4') and s = ' ' then return "" // Por ejemplo en ex0rcis2se0 ese se0 del final debe reemplazarse por un espacio
+
+		elseif symbol in ('0'‥'4') then return s // Los numeros siempre son la letra
+			
+		else return symbol
+
+		end
+	end	
+	
+	function h1(q,symbol) begin
+		
+			if q = "inicio" and symbol in ('a'‥'z') then return symbol
+		
+			elseif q = "final" and symbol != "" then return "error" // MAYBE DA ERROR 
+		
+			else return "error"
+				
+		end
+	end
+
+function toChar1(symbol) begin
+	  	if symbol = 0 then return '0' // Esto es B1‥.Bn
+		
+		elseif symbol = 1 then return '1'
+			
+		elseif symbol = 2 then return '2'
+			
+		elseif symbol = 3 then return '3'
+			
+		elseif symbol = 4 then return '4'
+		
+		end
+end
+
+
+function g1(q) begin
+	  return λ
+end
+
+ 

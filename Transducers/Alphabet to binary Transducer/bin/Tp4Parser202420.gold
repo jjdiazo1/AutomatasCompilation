@@ -1,0 +1,45 @@
+using gold.**
+
+toSet(C) :=  {x|  x in C}
+
+///====   mini Parser===
+
+function createParser(A):IPushdownAutomaton begin
+	Q:=(0‥5)
+	Σ:=toSet(A)  ∪ {' ', '\n', '\t'}
+	
+	Γ:={'0'}
+	q₀:=0
+	F:= {0}
+	M:=GPushdownAutomaton(Q,Σ,Γ,q₀,F)
+SkipChars := {' ', '\n', '\t'}   // this will only  be used when testing only the parser as the lexer removes  SkipChars
+	//transition for open and close  parenthesis as top-level commands.You may use others for blocks
+	
+	 M.delta(0,1,'f').ignore()  //for  _forward_ instruction
+    M.delta(1,0,'#').ignore()
+    M.delta(1,0,'i').ignore()
+    
+    M.delta(0,2,'r').ignore()  //for  _right_ instruction 
+     M.delta(2,0,'#').ignore()
+		M.delta(2,0,'i').ignore()
+		
+	M.delta(0,0,'u').ignore()
+	M.delta(0,0,'d').ignore()
+    
+    M.delta(0,3,'R').ignore()  //for _repeat_ loop
+ 	M.delta(3,4,'#').ignore()
+ 	M.delta(3,4,'i').ignore()
+ 	M.delta(4,0,'[').push("0")
+ 	M.delta(0,0,']').pop("0")
+
+
+ for each q in Q do
+ 	for each s in SkipChars do
+ 	   M.delta(q,q,λ+s).ignore()
+ end
+ end
+
+
+return M
+end
+

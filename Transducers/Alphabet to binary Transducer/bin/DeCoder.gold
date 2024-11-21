@@ -1,0 +1,83 @@
+using gold.**
+  
+
+var  Alph 
+
+procedure main(args:String[]) begin
+ 	    
+	
+	decoder:=createTransducer(Alph)
+	print "Input strings of (0..7)"
+			
+	
+	Utilities.test(decoder)
+end
+
+function createTransducer(A):ITransducer begin
+	Q := {0, 1, 2, 3, 4, 5, 6, 7, λ} ∪ {"error"}
+	print Q
+	Σ :=('0'‥'7')
+	O := ('a'‥'c')
+	q₀:= λ 
+	F:= Q \ {"error"}
+	return GDeterministicTransducer(Q,Σ,O,q₀,F,δ,g,h)
+end
+
+ h(x,s):= binary(x, s)
+ 
+ g(x):= λ
+ 
+function δ(q,σ) begin
+	
+	if q = λ and σ in ('1'‥'7') then return "error"
+		end
+		
+	if q = "error" and σ in ('0'‥'7') then return "error"
+		end
+	
+	//Quitamos los casos de 3 a 4 y de 5 a 6 que son los unicos que fallan en el criterio de que su diferencia a pesar de que sea (1,2 o 4) igual son invalidas
+	
+	if q = 3 and σ = '4' then return "error"
+		end
+		
+	if q = 4 and σ = '3' then return "error"
+		end	
+	
+	if q = 5 and σ = '6' then return "error"
+		end	
+	
+	if q = 6 and σ = '5' then return "error"
+		end	
+		
+	return Integer.parseInt(σ)
+end
+   
+function binary(x, s) begin
+		
+	if x = λ then return ""
+		end
+		
+	if x = "error" and s in ('0'‥'7') then return ""
+		end
+	
+	number:= x - Integer.parseInt(s)
+	n:= absolute(number)
+	
+	print n
+	
+	if n = 4 then return "a"
+		
+	elseif n = 2 then return "b"
+		
+	elseif n = 1 then return "c"
+		else return ""
+	end
+end
+
+function absolute(number) begin
+	numberAbs := (number * -1)
+	if number<0 then return numberAbs
+				
+	else return number
+	end
+end
