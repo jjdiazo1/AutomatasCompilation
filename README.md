@@ -241,4 +241,137 @@ Key Files in the Project:
 3. `Tp4LexerParser.gold`:
    - User interface for integrating the Lexer and Parser.
 
+## 2. Lexer Parser Robot
 
+This project involves using GOLD to perform syntactic analysis of a robot language defined in earlier projects. The goal is to complete a Lexer and a Parser that validate whether robot programs are syntactically correct, without executing or interpreting them.
+
+The robot language supports two primary types of inputs:
+
+### Execution Commands
+- Syntax: EXEC followed by a block within braces.
+- A block contains multiple instructions separated by semicolons.
+
+### Definitions
+- Variable Definitions:
+  - NEW VAR name=n: Defines a variable with a name and initializes it with a value.
+- Macro Definitions:
+  - NEW MACRO name(params)B: Defines a procedure with a name, optional parameters, and a block of instructions.
+
+
+### Commands and Instructions
+
+A block consists of instructions like:
+
+1. Assignments:
+   - Assigns a value to a variable.
+
+2. Control Commands:
+   - turnToMy(D): Turns the robot 90 degrees left, right, or 180 degrees back.
+   - turnToThe(O): Rotates the robot to a specific cardinal direction like north or west.
+   - Actions such as walk, jump, drop, pick, grab, letGo, and pop, which involve movement or resource manipulation.
+
+3. Macros:
+   - Calls to defined macros with parameters.
+
+4. Control Structures:
+   - Conditional: if condition then block1 else block2 fi.
+   - Loops: do condition block od or rep times block per.
+
+5. Special Commands:
+   - nop does nothing.
+   - safeExe(command) only executes if it won’t cause an error.
+
+
+### Conditions
+
+Conditions allow environmental checks, such as:
+- isBlocked?(D): Verifies if movement is blocked in a specified direction.
+- isFacing?(O): Checks if the robot is facing a cardinal direction.
+- zero?(n): Returns true if a value is zero.
+- not(C): Negates a given condition.
+
+## Task Description
+
+### Lexer
+- Modify Lexer202420.gold to tokenize commands, definitions, and keywords in the robot language.
+- Ensure tokens cover all supported language features.
+
+### Parser
+- Update ParserRobot202420.gold to validate the full syntax of robot programs, including commands, control structures, and definitions.
+
+### Case Sensitivity
+The language is case-sensitive. For instance, walk is valid, but waLK would be treated as an identifier.
+
+## Example of a Valid Program
+
+```
+NEW VAR rotate = 3
+
+NEW MACRO foo(c, p) {
+  drop(c);
+  letGo(p);
+  walk(rotate);
+}
+
+EXEC {
+  if not(isBlocked?(left)) then { turnToMy(left); walk(1); }
+  else { nop; } fi
+}
+
+EXEC {
+  safeExe(walk(1));
+  moves(left, left, forward, right, backwards);
+}
+
+EXEC {
+  if (not(isBlocked?(left))) then { turnToMy(left); walk(1); }
+  else { nop; } fi
+}
+
+
+EXEC {
+  safeExe(walk(1));
+  moves(left, left, forward, right, backwards);
+}
+
+
+NEW VAR rotate= 3
+NEW MACRO foo (c, p)
+{
+  drop(c);
+  letgo(p);
+  walk(rotate);
+}
+EXEC { foo (1 ,3); }
+
+NEW VAR one= 1
+NEW MACRO goend ()
+{
+  if (not (isBlocked?(front)))
+  then { move(one); goend(); }
+  else { nop; } fi;
+}
+
+NEW MACRO fill ()
+{
+  rep roomForChips times
+  { if (not (zero?(myChips))) then { drop(1); } else { nop; } fi ;}
+  per ;
+}
+
+NEW MACRO fill1 ()
+{
+  do (not (zero?(roomForChips)))
+  { if (not (zero?(myChips))) { drop(1); } else { nop; } fi ;}
+  od ;
+}
+
+NEW MACRO grabAll ()
+{
+  grab (balloonsHere);
+}
+```
+
+An overall execution is shown below:
+
+<img width="762" alt="Screenshot 2024-11-21 at 3 02 54 PM" src="https://github.com/user-attachments/assets/b0482966-6ed0-4f26-9fc3-d0cfce9fc144">
