@@ -177,9 +177,7 @@ PushDown Automatas
 
 ---
 
-## 1. Lexer Parser Logo
-
-# TP4: Lexer and Parser for Logo Language in GOLD
+## 1. Lexer Parser Logo 
 
 This project focuses on building a **Lexer** and a **Parser** for the **Logo programming language** using GOLD. The goal is to first tokenize (Lexer) the Logo commands and then validate their syntax (Parser) using a pushdown automaton. The provided `Tp4LexerParser.gold` serves as the main user interface for this project.
 
