@@ -1,6 +1,8 @@
 # AutomatasCompilation
 A compilation of automatas I made for the course Languages and Machines in Universidad De Los Andes
 
+# DFAs
+---
 ## 1. Cat Even
 
 <img width="542" alt="Screenshot 2024-10-15 at 3 00 43 PM" src="https://github.com/user-attachments/assets/5ada6d2f-37fb-4743-9700-851df93e2f23">
