@@ -2,6 +2,8 @@
 A compilation of automatas I made for the course Languages and Machines in Universidad De Los Andes
 
 # DFAs
+Deterministic Finite Automatas
+
 ---
 ## 1. Cat Even
 
@@ -55,6 +57,11 @@ We input this in the coder
 <img width="770" alt="Screenshot 2024-10-21 at 7 42 32 PM" src="https://github.com/user-attachments/assets/50a0fb2f-2a44-4049-9b1e-a4c3dc586093">
 
 Then we input the output of the coder in the decoder and we get the same result
+
+# PDAs
+PushDown Automatas
+
+---
 
 <img width="770" alt="Screenshot 2024-10-21 at 7 42 20 PM" src="https://github.com/user-attachments/assets/76a4f7fe-3a95-42e6-9860-0235a4935b84">
 
