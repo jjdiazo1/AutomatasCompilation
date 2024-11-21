@@ -177,3 +177,70 @@ PushDown Automatas
 
 ---
 
+## 1. Lexer Parser Logo
+
+# TP4: Lexer and Parser for Logo Language in GOLD
+
+This project focuses on building a **Lexer** and a **Parser** for the **Logo programming language** using GOLD. The goal is to first tokenize (Lexer) the Logo commands and then validate their syntax (Parser) using a pushdown automaton. The provided `Tp4LexerParser.gold` serves as the main user interface for this project.
+
+## Logo Language Features:
+
+The Lexer and Parser must support the following subset of the Logo language:
+
+Actions:
+- Basic commands:
+  - `forward`, `right`, `left`, `penup`, `pendown`, `arc`, `clearscreen`.
+- **Repeat Loops**:
+  - Support for loops with the `repeat` keyword.
+- **Function Calls**:
+  - Ability to call functions with or without parameters.
+
+Variable Declarations:
+- Support for creating and using variables.
+
+Function Definitions:
+- Ability to define procedures (functions) with or without parameters.
+
+
+## Lexer Implementation
+
+Modify the `Tp4Lexer.gold` file to ensure that:
+- Each Logo instruction and keyword is associated with a **single-character token**.
+- Variables, function names, and function parameters are represented using a common identifier token (`i`).
+
+## Parser Implementation
+
+Define a pushdown automaton in `Tp4Parser.gold` to recognize tokenized Logo programs. The automaton must validate:
+- Syntax for commands, loops, variable declarations, and function definitions.
+- Proper structure for function calls and program logic.
+
+## Special Notes:
+
+- **Variable and Function Usage**:
+  - It is **not necessary** to verify whether a function or variable has been defined before its usage. This limitation is due to the constraints of pushdown automata.
+
+- **Lessons Reference**:
+  - Visit [Turtle Academy](https://turtleacademy.com) for an overview of the Logo language. The relevant lessons for this project are:
+    - **1, 2, 3, 6, 9, 11, and 12**.
+
+- **Tokens**:
+  - Ensure that every instruction, variable, and keyword in Logo corresponds to a distinct token.
+
+SO it works like this:
+
+1. **Tokenization**:
+   - The Lexer processes Logo code and converts it into a stream of tokens.
+
+2. **Parsing**:
+   - The Parser validates the tokenized input, ensuring that it conforms to the syntax rules of Logo.
+
+Key Files in the Project:
+
+1. `Tp4Lexer.gold`:
+   - Define the tokens for the Logo commands, keywords, and variables.
+2. `Tp4Parser.gold`:
+   - Define the pushdown automaton for recognizing and validating the tokenized input.
+3. `Tp4LexerParser.gold`:
+   - User interface for integrating the Lexer and Parser.
+
+
