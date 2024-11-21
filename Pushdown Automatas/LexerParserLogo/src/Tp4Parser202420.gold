@@ -1,0 +1,113 @@
+using gold.**
+
+toSet(C) :=  {x|  x in C}
+
+function createParser(A):IPushdownAutomaton begin
+	Q:=(0‥6)
+	Σ:=toSet(A)  ∪ {' ', '\n', '\t'}
+		
+	Γ := {'0', 'R', 'P', 'V'}  // Añadido 'R' para repeat y 'P' para procedimientos
+	q₀:=0
+	F:= {0}
+	M:=GPushdownAutomaton(Q,Σ,Γ,q₀,F)
+	SkipChars := {' ', '\n', '\t'}   // this will only  be used when testing only the parser as the lexer removes  SkipChars
+	//transition for open and close  parenthesis as top-level commands.You may use others for blocks
+			
+	//FORWARD
+	M.delta(0,1,'f').ignore()
+	
+	//LEFT
+	M.delta(0,1,'l').ignore()
+	
+	//RIGHT
+	M.delta(0,1,'r').ignore()
+	
+	M.delta(1,0,'#').ignore()
+	
+	//PARA QUE PUEDAN USAR VARIABLES
+	M.delta(0,0,'i').pop("V")
+	M.delta(0,0,':').push("V")
+	
+	//IDENTIFIER NORMAL COMO LLAMAR FUNCIONES
+	M.delta(0,0,'i').ignore()
+	M.delta(0,0,'#').ignore() //Tristemente toca entonces permitir las cadneas de un solo digito
+
+	//CLEARSCREEN, PENUP AND DOWN, HIDE AND SHOW TURTLE
+	M.delta(0,0,'c').ignore()
+	M.delta(0,0,'u').ignore()
+	M.delta(0,0,'d').ignore()
+	
+	//INSTRUCCIONES CON 2 PARAMETROS NUMERICOS
+	M.delta(0,2,'F').ignore()
+	M.delta(2,1,'#').ignore() //Y ya si estoy en 1 me devuelvo por la condicion anterior
+	M.delta(2,2,':').push("V")
+	M.delta(2,1,'i').pop("V")
+	M.delta(1,1,':').push("V")
+	M.delta(1,0,'i').pop("V")
+	
+
+	// REPEAT
+	M.delta(0,3,'R').ignore()
+	M.delta(3,4,'#').ignore()
+	M.delta(3,4,':').ignore()
+	M.delta(4,0,'[').push("R")
+	M.delta(0,0,']').pop("R")
+
+	// TO END
+	M.delta(0,5,'T').push("P")
+	M.delta(5,0,'i').ignore()
+	M.delta(0,0,'E').pop("P")
+	M.delta(0,0,'[').push("R")
+	M.delta(0,0,']').pop("R")
+	
+	// PARA DEFINICION DE VARIABLES
+	M.delta(0,1,'m').push("0")
+	M.delta(1,6,'"').pop("0")
+	M.delta(6,1,'i').ignore()
+
+	// Transiciones para manejar espacios en blanco y saltos de línea
+	for each q in Q do
+		for each s in SkipChars do
+			M.delta(q, q, λ + s).ignore()
+		end
+	end
+
+	return M
+end
+
+//TEXTO CON EL QUE PROBE
+
+⧐forward 50
+⧐right 90
+⧐left 180
+⧐clearscreen
+⧐forward 50 left 90 forward 50
+⧐fd 50 lt 90 fd 30
+⧐penup
+⧐pendown
+⧐hideturtle
+⧐showturtle
+⧐rt 90 fd 50
+⧐home
+⧐setx 100
+⧐cs setxy 50 50
+⧐seth 175
+⧐arc 90 90
+⧐arc 360 100
+⧐fd 50 lt 90 fd 50 lt 90 fd 50 lt 90 fd 50 lt 90
+⧐repeat 4 [ fd 100 lt 90]
+⧐repeat 9 [repeat 4 [fd 5 rt 90] penup fd 8 pendown]
+⧐backward 100
+⧐bk 2
+⧐cs repeat 36 [ rt 10 repeat 8 [ fd 50 bk 45]]
+⧐to dashline repeat 5 [fd 1 fd 10 fd 3 fd 10] end
+⧐to dashline repeat 5 [setwidth 1 fd 10 setwidth 3 fd 10] end
+⧐make "y 5
+⧐to going :fdinput fd :fdinput end
+⧐hola 2
+⧐hola 4
+⧐fd 2
+⧐hola :v :t :y 4 2 :g 5 3
+⧐hola
+⧐to hola :v :y :v :v :evevevev [hola 2 1 2 4 4] end
+⧐$
